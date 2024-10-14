@@ -43,9 +43,9 @@ const OlaMaps = () => {
           mapStyle="https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json"
           transformRequest={(url, resourceType) => {
             if (url.includes("?")) {
-              url = `url + ${process.env.OLA_KEY1}`;
+              url = url + "&api_key=jpqoyx7O6gYKwgHzo0VApPEp3tOswsCku9gj4hdz";
             } else {
-              url = `url + ${process.env.OLA_KEY2}`;
+              url = url + "?api_key=jpqoyx7O6gYKwgHzo0VApPEp3tOswsCku9gj4hdz";
             }
             return { url, resourceType };
           }}
