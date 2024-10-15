@@ -6,10 +6,12 @@ import React, { useState } from 'react'
 import { useSession,signIn,signOut } from 'next-auth/react';
 import { toast } from 'sonner'
 import { Loader } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 const AddNewListing = () => {
   const [selectedAddress, setSelectedAddress] = useState('');
   const { data: session } = useSession()
   const [loader,setLoader] = useState(false);
+  const router = useRouter();
   const nextHandler = async() => {
     console.log(selectedAddress);
     // console.log(session.user.email);
@@ -24,6 +26,8 @@ const AddNewListing = () => {
       .insert([
         { address: selectedAddress, 
           createdBy: session.user?.email,
+          profileImage:session.user?.image,
+          fullName:session.user?.name
           },
       ])
       .select();
@@ -31,6 +35,7 @@ const AddNewListing = () => {
         setLoader(false);
         console.log("Data Added",data);
         toast("New Address Added for Listing!!")
+        router.replace('/edit-listing/'+data[0].id);
       }if(error) {
         setLoader(false);
         console.log(error);

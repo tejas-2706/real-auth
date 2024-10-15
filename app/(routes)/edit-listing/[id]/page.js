@@ -16,17 +16,42 @@ import { Formik } from 'formik'
 import { supabase } from '@/utils/supabase/client'
 import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
-function EditListing() {
-  const params = usePathname();
-  useEffect(() => {
-    console.log(params.split('/')[2])
-  }, []);
+import { useSession,status,signIn,signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation'
+import { setErrorMap } from 'zod'
+
+function EditListing({params}) {
+  // const params = usePathname();
+  // const {user} = useUser();
+  // const { data: session } = useSession();
+  // const router = useRouter();
+  // useEffect(()=>{
+  //   // const user = session.user?.email;
+  //   // console.log(user);
+  // },[])
+  // useEffect(() => {
+  //   // console.log(params.split('/')[2])
+    
+  //   (session.user?.email)&&verifyUserRecord();
+  // }, []);
+
+  // const verifyUserRecord =async()=>{
+  //   const {data,error}=await supabase
+  //   .from('listing')
+  //   .select('*')
+  //   .eq('createdBy',session.user?.email)
+  //   .eq('id',params.id)
+
+  //   if(data?.length<=0){
+  //     router.replace('/')
+  //   }
+  // }
   const onSubmitHandler = async(formValue) => {
 
     const { data, error } = await supabase
       .from('listing')
       .update(formValue)
-      .eq('id', params.split('/')[2])
+      .eq('id', params.id)
       .select()
 
       if (data) {
