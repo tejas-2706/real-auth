@@ -1,5 +1,5 @@
 "use client"
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
@@ -18,9 +18,11 @@ import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
 import { useSession,status,signIn,signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation'
-import { setErrorMap } from 'zod'
+import FileUpload from '../_components/FileUpload'
+// import { setErrorMap } from 'zod'
 
 function EditListing({params}) {
+  const [images, setImages] = useState([]);
   // const params = usePathname();
   // const {user} = useUser();
   // const { data: session } = useSession();
@@ -57,10 +59,31 @@ function EditListing({params}) {
       if (data) {
         console.log("Data Added",data);
         toast("Listing Updated and Publish!!")
-      }if(error) {
-        console.log(error);
-        toast("Server side error!!")
       }
+      // if(error) {
+      //   console.log(error);
+      //   toast("Server side error!!")
+      // }
+
+      for (const image of images) {
+        const file = image;
+        const fileName = Date.now().toString();
+        const fileExt = fileName.split('.').pop();
+        const { data, error } = await supabase.storage.from('listingImages').upload(`${fileName}`, file, {
+          contentType: `image/${fileExt}`,
+          upsert: false
+        });
+  
+        if (error) {
+          console.log(error);
+          toast("error uploading!!")
+        }
+        else {
+          console.log('data', data);
+        }
+  
+      }
+  
       
   }
   return (
@@ -165,6 +188,11 @@ function EditListing({params}) {
                   <h2 className='text-gray-500'>Description</h2>
                   <Textarea placeholder='' name='description' onChange={handleChange} />
                 </div>
+              </div>
+
+              <div>
+                <h2 className='font-lg text-gray-500 my-2'>Upload Property Images</h2>
+                <FileUpload setImages={(value) => setImages(value)} />
               </div>
 
               <div className='flex gap-7 justify-end'>

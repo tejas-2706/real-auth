@@ -398,7 +398,7 @@ const GoogleAddressSearch = ({selectedAddress , setSelectedAddress}) => {
     setError(null);
 
     try {
-      const apiKey = process.env.NEXT_PUBLIC_OLA_MAPS_API_KEY;
+      const apiKey = 'OCT8Oo19bcr3JkkGFuUZLDe4VW4wOXM1blmHWFSa';
       const requestId = '24803f0d-8a94-4eaf-b1e3-0c5a67d0d757'; // Replace with your actual request ID
 
       const response = await fetch(`https://api.olamaps.io/places/v1/autocomplete?input=${encodeURIComponent(query)}&api_key=${apiKey}`, {
