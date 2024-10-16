@@ -1,5 +1,5 @@
 "use client"
-import React,{useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
@@ -16,12 +16,23 @@ import { Formik } from 'formik'
 import { supabase } from '@/utils/supabase/client'
 import { usePathname } from 'next/navigation'
 import { toast } from 'sonner'
-import { useSession,status,signIn,signOut } from 'next-auth/react';
+import { useSession, status, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation'
 import FileUpload from '../_components/FileUpload'
 // import { setErrorMap } from 'zod'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
-function EditListing({params}) {
+function EditListing({ params }) {
   const [images, setImages] = useState([]);
   // const params = usePathname();
   // const {user} = useUser();
@@ -33,7 +44,7 @@ function EditListing({params}) {
   // },[])
   // useEffect(() => {
   //   // console.log(params.split('/')[2])
-    
+
   //   (session.user?.email)&&verifyUserRecord();
   // }, []);
 
@@ -48,7 +59,7 @@ function EditListing({params}) {
   //     router.replace('/')
   //   }
   // }
-  const onSubmitHandler = async(formValue) => {
+  const onSubmitHandler = async (formValue) => {
 
     const { data, error } = await supabase
       .from('listing')
@@ -56,35 +67,50 @@ function EditListing({params}) {
       .eq('id', params.id)
       .select()
 
-      if (data) {
-        console.log("Data Added",data);
-        toast("Listing Updated and Publish!!")
-      }
-      // if(error) {
-      //   console.log(error);
-      //   toast("Server side error!!")
-      // }
+    if (data) {
+      console.log("Data Added", data);
+      toast("Listing Updated and Publish!!")
+    }
+    // if(error) {
+    //   console.log(error);
+    //   toast("Server side error!!")
+    // }
 
-      for (const image of images) {
-        const file = image;
-        const fileName = Date.now().toString();
-        const fileExt = fileName.split('.').pop();
-        const { data, error } = await supabase.storage.from('listingImages').upload(`${fileName}`, file, {
-          contentType: `image/${fileExt}`,
-          upsert: false
-        });
-  
-        if (error) {
-          console.log(error);
-          toast("error uploading!!")
-        }
-        else {
-          console.log('data', data);
-        }
-  
+    for (const image of images) {
+      const file = image;
+      const fileName = Date.now().toString();
+      const fileExt = fileName.split('.').pop();
+      const { data, error } = await supabase.storage.from('listingImages').upload(`${fileName}`, file, {
+        contentType: `image/${fileExt}`,
+        upsert: false
+      });
+
+      if (error) {
+        console.log(error);
+        toast("error uploading!!")
       }
-  
-      
+      else {
+        const imageUrl=process.env.NEXT_PUBLIC_IMAGE_URL+fileName;
+        const {data,error}= await supabase
+          .from("listingImages")
+          .insert([
+          {url: imageUrl, listing_id:params?.id}
+          ])
+          .select();
+      }
+    }
+  }
+  const publishBtnHandler = async() => {
+
+      const { data, error } = await supabase
+      .from('listing')
+      .update({ active: true })
+      .eq('id', params?.id)
+      .select()
+
+      if(data){
+        toast('Listing Published!!')
+      }
   }
   return (
     <div className='px-10 md:px-36 my-10'>
@@ -196,8 +222,26 @@ function EditListing({params}) {
               </div>
 
               <div className='flex gap-7 justify-end'>
+
                 <Button variant='outline' className='bg-white text-black border hover:bg-gray-200'>Save</Button>
-                <Button>Save & Publish</Button>
+
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild><Button type="button">Save & Publish</Button></AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you ready to publish?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently Upload & Publish the Data.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => publishBtnHandler()}>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+
               </div>
             </div>
           </form>)}

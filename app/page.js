@@ -21,15 +21,12 @@
   // )
 // }
 
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import OlaMaps from "./component/OlaMaps";
+import ListingMapView from "./component/ListingMapView";
 // import Header from "@/components/Header";
 export default function Home() {
   return (
     <div>
-      {/* <Header/> */}
-      <OlaMaps/>
+      <ListingMapView type='Sell'/>
     </div>
   );
 }
