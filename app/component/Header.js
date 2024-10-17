@@ -78,7 +78,7 @@ const toggleDropdown = () => {
       </ul>
       
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+        <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
           <ul className="py-2">
             <li className="px-4 py-2 border-b border-gray-100 break-all">{session.user.email}</li>
             <li className="px-4 py-2">
@@ -96,6 +96,7 @@ const toggleDropdown = () => {
 
 
         {!session && <Link href={'/login'}> <Button className="hover:bg-slate-200 hover:text-black  bg-black text-white px-4 p-4 rounded-lg">Login</Button> </Link>}
+        {!session && <Link href={'/adminlogin'}> <Button className="hover:bg-slate-200 hover:text-black  bg-black text-white px-4 p-4 rounded-lg">Admin</Button> </Link>}
         
         {/* <button onClick={() => signIn("github")}>Sign in Using Github</button> */}
 

@@ -1,9 +1,18 @@
 import React from 'react'
 import Image from 'next/image'
-import { BathIcon, BedDouble, MapPin, Ruler } from 'lucide-react'
-function Listing({listing}) {
+import { BathIcon, BedDouble, MapPin, Ruler, Search } from 'lucide-react'
+import GoogleAddressSearch from './GoogleAddressSearch'
+import { Button } from '@/components/ui/button'
+function Listing({listing,handleSearchClick,searchedAddress}) {
   return (
     <div>
+        <div className='p-3 flex gap-6 justify-between items-center'>
+        <GoogleAddressSearch 
+        setSelectedAddress={(value) => searchedAddress(value)}/>
+        <Button className="flex gap-2 "
+        onClick={handleSearchClick}
+        ><Search className='h-4 w-4'/>Search</Button>
+        </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
         {listing?.length>0? listing.map((item,index)=>(
             <div className='p-3 hover:border hover:bg-slate-100 rounded-lg cursor-pointer'>

@@ -226,7 +226,7 @@ function EditListing({ params }) {
                 <Button variant='outline' className='bg-white text-black border hover:bg-gray-200'>Save</Button>
 
 
-                <AlertDialog>
+                {/* <AlertDialog>
                   <AlertDialogTrigger asChild><Button type="button">Save & Publish</Button></AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
@@ -240,7 +240,7 @@ function EditListing({ params }) {
                       <AlertDialogAction onClick={() => publishBtnHandler()}>Continue</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
-                </AlertDialog>
+                </AlertDialog> */}
 
               </div>
             </div>

@@ -43,7 +43,7 @@ const Login = () => {
 
         {/* <button className="w-full bg-black text-white py-2 rounded-lg flex items-center justify-center mb-4 hover:bg-gray-800" onClick={() => signIn("github")}>Sign in Using Github</button> */}
         <p className="text-center text-gray-600 mt-4">
-          Don't have an account? <a href="#" className="text-blue-500 hover:underline">Sign up</a>
+          Don't have an account? <a href="login" className="text-blue-500 hover:underline">Sign up</a>
         </p>
       </div>
     </div>

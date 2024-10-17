@@ -430,9 +430,9 @@ const GoogleAddressSearch = ({selectedAddress , setSelectedAddress}) => {
   }, [query]);
   
   return (
-    <div>
+    <div className='w-full'>
       {/* <h1>Place Search</h1> */}
-      <input className="w-full"
+      <input className="w-full border rounded-md "
         type="text"
         placeholder="Search for a place..."
         value={query}
