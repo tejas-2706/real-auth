@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import ViewListing from './viewListing'
+import ViewListing from './ViewListing'
 const AdminDashboard = () => {
   return (
     <div className='grid grid-cols-1 md:grid-cols-1'>
