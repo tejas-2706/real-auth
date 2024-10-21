@@ -15,7 +15,7 @@ function Listing({listing,handleSearchClick,searchedAddress}) {
         </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
         {listing?.length>0? listing.map((item,index)=>(
-            <div className='p-3 hover:border hover:bg-slate-100 rounded-lg cursor-pointer'>
+            <div key={item.id} className='p-3 hover:border hover:bg-slate-100 rounded-lg cursor-pointer'>
                 <Image src={item.listingImages[0].url}
                 width={800}
                 height={150}
